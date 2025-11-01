@@ -397,9 +397,10 @@
     <div class="content">
       <div>
         <div class="cover" id="mCover"></div>
-        <div style="margin-top: 12px">
-          <audio id="mAudio" controls preload="none"></audio>
-        </div>
+       <div class="buttons" style="margin-top: 12px">
+  <a id="mListen" class="btn" target="_blank" rel="noopener">Listen</a>
+</div>
+
         <div class="buttons" style="margin-top: 12px">
           <a id="mScore" class="btn" target="_blank" rel="noopener">Open Score (PDF)</a>
           <a id="mVideo" class="btn" target="_blank" rel="noopener">Watch Video</a>
@@ -447,7 +448,7 @@
         tags: ['chamber', 'string quartet', 'counterpoint'],
         cover: 'https://images.unsplash.com/photo-1520975693416-35a2f3326d19?q=80&w=1200&auto=format&fit=crop',
         audio: './assets/audio/string-quintet-2.mp3',
-        score: './assets/audio/string-quintet-2.pdf',
+        score: './assets/scores/string-quintet-2.pdf',
         video: '#',
         notes: 'Motivic counterpoint, tight rhythmic cells, and a restless harmonic undertow.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
@@ -464,7 +465,7 @@
         tags: ['solo', 'percussion', 'virtuosic'],
         cover: 'https://images.unsplash.com/photo-1507833423370-a126b89d3946?q=80&w=1200&auto=format&fit=crop',
         audio: './assets/audio/string-quintet-1.mp3',
-        score: './assets/audio/string-quintet-2.pdf',
+        score: './assets/scores/string-quintet-2.pdf',
         video: '#',
         notes: 'Arpeggiated textures with fluid register shifts and shimmering resonances.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
@@ -481,7 +482,7 @@
         tags: ['orchestra', 'crossover', 'upbeat'],
         cover: 'https://images.unsplash.com/photo-1496285416001-d6bc2b3c2f77?q=80&w=1200&auto=format&fit=crop',
         audio: './assets/audio/summer-dream.mp3',
-        score: './assets/audio/summer-dream.pdf',
+        score: './assets/scores/summer-dream.pdf',
         video: '#',
         notes: 'Driving grooves, luminous strings, and brass hooks—concert opener energy.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
@@ -571,6 +572,15 @@
       $('#mVideo').style.display = w.video && w.video !== '#' ? 'inline-flex' : 'none';
       if (w.video && w.video !== '#') $('#mVideo').href = w.video;
 
+      // Listen button
+if (w.audio && w.audio !== '#') {
+  $('#mListen').style.display = 'inline-flex';
+  $('#mListen').href = w.audio;
+} else {
+  $('#mListen').style.display = 'none';
+}
+
+
       // Instrumentation (lower line only)
 // Custom detail line; no longer tied to instrumentation
 setTextOrHide($('#mInstr'), w.detailLine);
@@ -629,6 +639,7 @@ setTextOrHide($('#mInstr'), w.detailLine);
 </body>
 
 </html>
+
 
 
 
