@@ -190,14 +190,12 @@
       <div>
         <div class="cover" id="mCover"></div>
         <div style="margin-top: 12px">
-          <!-- Preload metadata so duration shows without needing to play -->
+          <!-- Preload metadata so duration shows when this audio is the current assignment -->
           <audio id="mAudio" controls preload="metadata"></audio>
         </div>
         <div class="buttons" style="margin-top: 12px; gap:10px; display:flex; flex-wrap:wrap;">
           <a id="mScore" class="btn" target="_blank" rel="noopener">Open Score (PDF)</a>
           <a id="mVideo" class="btn" target="_blank" rel="noopener">Watch Video</a>
-          <!-- Only appears when the opened work has an audio file different from current -->
-          <button id="mPlayThis" class="btn" type="button" style="display:none">▶ Play This Piece</button>
         </div>
       </div>
       <div>
@@ -316,10 +314,84 @@
     }
 
     // --- Modal + Audio behavior ---------------------------------------------
-    let currentAudioWorkId = null; // which work the audio element currently represents
+    let currentAudioWorkId = null;   // which work the audio element currently represents (its src)
+    let displayedWorkId = null;      // which work is currently shown in the modal
+    const mAudio = new Audio();      // create a dedicated Audio object for playback
+    mAudio.preload = 'metadata';
+
+    // We mirror this invisible audio into the visible controls via Media Session by syncing src & time when needed.
+    // To use the native controls in the modal, we'll bind the visible <audio> to point to mAudio's media stream.
+    // Simpler approach: we will reuse the visible <audio> (#mAudio) as the *UI*, while actual playback uses `mAudio`.
+    // We keep them in sync: when switching, we set both sources; when playing/pausing via UI, we control mAudio.
+
+    const uiAudio = document.createElement('audio');
+    // We'll replace the existing <audio id="mAudio"> with our controlled one to ensure events are wired once:
+    window.addEventListener('DOMContentLoaded', () => {
+      const slot = document.getElementById('mAudio');
+      slot.replaceWith(uiAudio);
+      uiAudio.id = 'mAudio';
+      uiAudio.controls = true;
+      uiAudio.preload = 'metadata';
+      // UI → Engine
+      uiAudio.addEventListener('play', async () => {
+        // If the user is viewing a different work than what's currently playing, switch on PLAY.
+        if (displayedWorkId && displayedWorkId !== currentAudioWorkId) {
+          const w = WORKS.find(x => x.id === displayedWorkId);
+          if (w && w.audio && w.audio !== '#') {
+            // Switch source only now
+            if (mAudio.src !== new URL(w.audio, location.href).href) {
+              mAudio.src = w.audio;
+            }
+            currentAudioWorkId = w.id;
+            try { await mAudio.play(); } catch(e) {}
+            // Keep UI in sync visually (duration/time). Load metadata if needed.
+            syncUItoEngine();
+            return; // prevent double play on ui element
+          }
+        }
+        // Otherwise, just play/resume the current engine
+        try { await mAudio.play(); } catch(e) {}
+        syncUItoEngine();
+      });
+      uiAudio.addEventListener('pause', () => {
+        mAudio.pause(); // pausing the UI pauses engine
+        syncUItoEngine();
+      });
+      uiAudio.addEventListener('seeking', () => { mAudio.currentTime = uiAudio.currentTime; });
+      uiAudio.addEventListener('volumechange', () => { mAudio.volume = uiAudio.volume; mAudio.muted = uiAudio.muted; });
+
+      // Engine → UI synchronization
+      ['timeupdate','durationchange','play','pause','loadedmetadata','ratechange','volumechange','ended'].forEach(ev=>{
+        mAudio.addEventListener(ev, syncUItoEngine);
+      });
+    });
+
+    function syncUItoEngine(){
+      // Keep src alignment (so the native control shows duration)
+      if (mAudio.src && uiAudio.src !== mAudio.src) {
+        uiAudio.src = mAudio.src;
+      }
+      // Mirror state
+      if (Math.abs((uiAudio.currentTime || 0) - (mAudio.currentTime || 0)) > 0.3 && !uiAudio.seeking) {
+        uiAudio.currentTime = mAudio.currentTime;
+      }
+      if (uiAudio.paused === false && mAudio.paused) {
+        // UI thinks playing but engine paused: enforce pause for visual correctness
+        uiAudio.pause();
+      } else if (uiAudio.paused && !mAudio.paused) {
+        // UI paused but engine playing: reflect play state
+        // Only call play() if user already interacted (browsers block autoplay)
+        // Here it runs after a user gesture, so it's fine.
+        uiAudio.play().catch(()=>{});
+      }
+      // Keep volume/mute in sync (UI is source of truth)
+      mAudio.volume = uiAudio.volume;
+      mAudio.muted = uiAudio.muted;
+    }
 
     function openModal(id){
       const w = WORKS.find(x=>x.id===id); if(!w) return;
+      displayedWorkId = w.id;
 
       // Title, meta, notes
       $('#mTitle').textContent = w.title;
@@ -349,33 +421,17 @@
       // Instrumentation (lower line only)
       $('#mInstr').textContent = w.instrumentation ? `Instrumentation: ${w.instrumentation}` : '';
 
-      const mAudio = $('#mAudio');
-
-      // If this modal is for the SAME work as the audio's current assignment, do nothing:
-      if (currentAudioWorkId === w.id) {
-        $('#mPlayThis').style.display = 'none'; // already the current piece
+      // If nothing is playing yet (engine has no src or is paused with no src),
+      // assign this piece's audio to engine so duration is visible immediately.
+      // Otherwise, do NOT change engine/src; switching happens only on PLAY while viewing another piece.
+      if ((!mAudio.src || mAudio.src === location.href) && w.audio && w.audio !== '#') {
+        mAudio.src = w.audio;            // load metadata (no autoplay)
+        currentAudioWorkId = w.id;
+        syncUItoEngine();
       } else {
-        // Different work opened:
-        // Do NOT touch mAudio.src so existing playback continues.
-        // Show a button to switch the player to this work when pressed.
-        $('#mPlayThis').style.display = (w.audio && w.audio !== '#') ? 'inline-flex' : 'none';
-        $('#mPlayThis').onclick = async () => {
-          if (w.audio && w.audio !== '#') {
-            try {
-              mAudio.src = w.audio;   // load this piece
-              currentAudioWorkId = w.id;
-              await mAudio.play();    // "play button" action implies user intent
-              $('#mPlayThis').style.display = 'none';
-            } catch (err) {
-              // If autoplay is blocked for any reason, the user can hit play on controls.
-              console.warn('Playback start blocked:', err);
-            }
-          }
-        };
+        // Keep current engine as-is. UI will show current engine duration/position.
+        syncUItoEngine();
       }
-
-      // Ensure duration shows when this is the current work and not yet playing:
-      // We rely on preload="metadata" — if src is already set from before, the duration is known.
 
       // Open modal
       const modal = $('#modal');
@@ -388,8 +444,7 @@
     function closeModal(){
       const modal = $('#modal');
       if (modal.open) modal.close();
-      // Intentionally DO NOT pause or unload audio:
-      // it keeps playing unless the user pauses or switches via "Play This Piece".
+      // DO NOT pause/unload audio; it keeps playing unless user pauses or presses play on another piece.
     }
 
     // --- Routing (Works/About) ----------------------------------------------
@@ -413,19 +468,6 @@
       const id = trigger.getAttribute('data-open');
       openModal(id);
     });
-
-    // Optional: assign the first piece to the player so duration shows even before first play
-    // Comment out if you prefer it to be empty until the user opens a Details and presses "Play This Piece".
-    (function initPlayerWithFirst(){
-      const first = WORKS[0];
-      if (!first) return;
-      const mAudio = $('#mAudio');
-      if (first.audio && first.audio !== '#') {
-        mAudio.src = first.audio;
-        currentAudioWorkId = first.id;
-        // Do not autoplay; preload="metadata" will fetch duration.
-      }
-    })();
   </script>
 </body>
 </html>
