@@ -43,6 +43,8 @@
         --shadow-2: 0 16px 36px rgba(0, 0, 0, .12);
       }
     }
+    #mInstr:empty { display: none; }
+
 
     * {
       box-sizing: border-box;
@@ -432,6 +434,7 @@
         video: 'https://youtube.com/',
         notes: 'Opening movement in sonata form; kinetic rhythms, brass fanfares, and lyrical second theme.',
         meta: 'July 2025 ~ September 12, 2025',
+        detailLine: 'Premiere: Oct 2025 • Taipei Philharmonic',
         order: 1,
       },
       {
@@ -448,6 +451,7 @@
         video: '#',
         notes: 'Motivic counterpoint, tight rhythmic cells, and a restless harmonic undertow.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        detailLine: 'Premiere: Oct 2025 • Taipei Philharmonic',
         order: 2,
       },
       {
@@ -464,6 +468,7 @@
         video: '#',
         notes: 'Arpeggiated textures with fluid register shifts and shimmering resonances.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        detailLine: 'Premiere: Oct 2025 • Taipei Philharmonic',
         order: 3,
       },
       {
@@ -480,6 +485,7 @@
         video: '#',
         notes: 'Driving grooves, luminous strings, and brass hooks—concert opener energy.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        detailLine: 'Premiere: Oct 2025 • Taipei Philharmonic',
         order: 4,
       },
     ];
@@ -533,6 +539,16 @@
       grid.innerHTML = items.map(cardHTML).join('');
       // No per-item listeners here; we use one delegated listener below.
     }
+    function setTextOrHide(el, text){
+  if (text && String(text).trim()) {
+    el.textContent = text;
+    el.style.display = '';
+  } else {
+    el.textContent = '';
+    el.style.display = 'none';
+  }
+}
+
 
     // --- Modal ---------------------------------------------------------------
     function openModal(id) {
@@ -556,7 +572,9 @@
       if (w.video && w.video !== '#') $('#mVideo').href = w.video;
 
       // Instrumentation (lower line only)
-      $('#mInstr').textContent = w.instrumentation ? `Instrumentation: ${w.instrumentation}` : '';
+// Custom detail line; no longer tied to instrumentation
+setTextOrHide($('#mInstr'), w.detailLine);
+
 
       // Audio: do NOT autoplay. Only set src if different so we don't interrupt ongoing playback.
       const mAudio = $('#mAudio');
@@ -605,8 +623,11 @@
       const id = trigger.getAttribute('data-open');
       openModal(id);
     });
+
+    
   </script>
 </body>
 
 </html>
+
 
