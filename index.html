@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alvin Lin • Composer Portfolio</title>
+  <meta name="description"
+    content="Portfolio website showcasing compositions by Alvin Lin — audio, scores, program notes, and credits." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --surface: #12161c;
+      --muted: #7b8794;
+      --text: #e6e9ef;
+      --brand: #6dc5ff;
+      --accent: #93e5ab;
+      --chip: #1b212b;
+      --card: #0f1318;
+      --ring: 0 0 0 2px var(--brand);
+
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(0, 0, 0, .35);
+      --shadow-2: 0 12px 36px rgba(0, 0, 0, .45);
+
+      --grid-gap: clamp(14px, 1.5vw, 18px);
+      --max-w: 1200px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f9fc;
+        --surface: #ffffff;
+        --card: #ffffff;
+        --text: #0c1118;
+        --muted: #546173;
+        --chip: #eef2f7;
+        --shadow: 0 6px 18px rgba(0, 0, 0, .08);
+        --shadow-2: 0 16px 36px rgba(0, 0, 0, .12);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1000px 600px at 20% -10%, rgba(109, 197, 255, .12), transparent 60%),
+        radial-gradient(900px 600px at 110% 20%, rgba(147, 229, 171, .10), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      background: color-mix(in oklab, var(--bg), transparent 25%);
+      border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 90%);
+    }
+
+    .inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 16px clamp(14px, 3vw, 28px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .brand .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      box-shadow: var(--shadow);
+    }
+
+    .brand .name {
+      font-size: 18px;
+    }
+
+    nav a {
+      color: var(--text);
+      opacity: .85;
+      margin-left: 18px;
+      font-weight: 500;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero {
+      padding: 24px 0 8px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 3.6vw, 42px);
+      line-height: 1.1;
+      margin: 4px 0 6px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.6vw, 16px);
+    }
+
+    /* Page routing (works/about) */
+    [data-page="about"] #works {
+      display: none;
+    }
+
+    [data-page="works"] #about,
+    [data-page="works"] #contact {
+      display: none;
+    }
+
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--grid-gap);
+      margin-top: 18px;
+    }
+
+    .card {
+      grid-column: span 4;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid color-mix(in oklab, var(--text), transparent 90%);
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-width: 1000px) {
+      .card {
+        grid-column: span 6;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        grid-column: span 12;
+      }
+    }
+
+    .cover {
+      position: relative;
+      aspect-ratio: 16/10;
+      background: #0a0d12;
+      display: grid;
+      place-items: center;
+    }
+
+    .cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--brand), transparent 70%);
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .card .body {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tags {
+      display: none;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: color-mix(in oklab, var(--text), transparent 20%);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid color-mix(in oklab, var(--text), transparent 85%);
+      background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 4%), var(--surface));
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .btn:hover {
+      box-shadow: var(--ring);
+    }
+
+    audio {
+      width: 100%;
+    }
+
+    /* Modal */
+    dialog.modal {
+      border: none;
+      padding: 0;
+      border-radius: 16px;
+      width: min(920px, 96vw);
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-2);
+    }
+
+    .modal header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 88%);
+    }
+
+    .modal .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    @media (max-width: 860px) {
+      .modal .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .close-x {
+      all: unset;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 20px;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .close-x:hover {
+      box-shadow: var(--ring);
+    }
+
+    .about,
+    .contact {
+      margin-top: 44px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid color-mix(in oklab, var(--text), transparent 90%);
+    }
+
+    .about .inner,
+    .contact .inner {
+      padding-top: 22px;
+      padding-bottom: 22px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 18px 0 28px;
+      text-align: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 1px, 1px);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site">
+    <div class="inner nav-row">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="name">Alvin Lin — Composer</div>
+      </div>
+      <nav aria-label="Primary">
+        <a href="#works">Works</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="inner">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Original music for orchestra, chamber, and soloists</h1>
+      <p>Browse recordings, scores, and program notes. Filter by instrumentation or vibe, and feel free to get in touch
+        for performance or score requests.</p>
+    </section>
+
+    <section id="works" aria-labelledby="works-title">
+      <h2 id="works-title" class="sr-only">Works</h2>
+      <div id="grid" class="grid" role="list"></div>
+    </section>
+
+    <section id="about" class="about" aria-labelledby="about-title">
+      <div class="inner">
+        <h2 id="about-title">About Alvin</h2>
+        <p>Composer and pianist based in Taiwan. I write orchestral and chamber music that blends classical craft with
+          contemporary color. Recent projects include a symphonic first movement, a string-heavy chamber work, and a
+          pop-classical hybrid arranged for full orchestra. I’m open to collaborations and commissions.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="contact" aria-labelledby="contact-title">
+      <div class="inner">
+        <h2 id="contact-title">Contact</h2>
+        <p>Email: <a href="mailto:alvin@example.com">alvin@example.com</a> · Scores & inquiries welcome.</p>
+        <p>Also on: <a href="#" rel="me">YouTube</a> · <a href="#" rel="me">SoundCloud</a> · <a href="#"
+            rel="me">Instagram</a></p>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Alvin Lin. All rights reserved.
+    </footer>
+  </main>
+
+  <!-- Details Modal -->
+  <dialog id="modal" class="modal" aria-labelledby="modal-title">
+    <header>
+      <strong id="modal-title">Work details</strong>
+      <button class="close-x" aria-label="Close" onclick="closeModal()">✕</button>
+    </header>
+    <div class="content">
+      <div>
+        <div class="cover" id="mCover"></div>
+        <div style="margin-top: 12px">
+          <audio id="mAudio" controls preload="none"></audio>
+        </div>
+        <div class="buttons" style="margin-top: 12px">
+          <a id="mScore" class="btn" target="_blank" rel="noopener">Open Score (PDF)</a>
+          <a id="mVideo" class="btn" target="_blank" rel="noopener">Watch Video</a>
+        </div>
+      </div>
+      <div>
+        <h3 id="mTitle" style="margin: 0 0 6px"></h3>
+        <div id="mMeta" class="meta"></div>
+        <div id="mTags" class="tags" style="margin-top: 10px"></div>
+        <p id="mNotes" style="margin-top: 10px"></p>
+        <p id="mInstr" class="meta" style="margin-top: 8px"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    // --- Data ----------------------------------------------------------------
+    // Add an exact ISO date for each work. Duration remains in minutes (decimal),
+    // but we render as mm:ss.
+    const WORKS = [
+      {
+        id: 'symphony-1',
+        title: 'Symphony No. 1 in A Major - I. Vivace (First movement)',
+        date: '2025-09-12', // exact date
+        year: 2025,
+        duration: 9.867, // minutes
+        instrumentation: 'Full orchestra: Flute I and II, Oboe, Clarinet, Bass Clarinet, Bassoon, Horn I and II, Trumpet, Trombone, Timpani I and II, Cymbals, Triangle, Violins I and II, Violas, Cellos, Double Basses',
+        tags: ['orchestra', 'symphonic', 'dramatic'],
+        cover: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop',
+        audio: 'https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav',
+        score: '#',
+        video: 'https://youtube.com/',
+        notes: 'Opening movement in sonata form; kinetic rhythms, brass fanfares, and lyrical second theme.',
+        meta: 'July 2025 ~ September 12, 2025',
+        order: 1,
+      },
+      {
+        id: 'string-quintet-2',
+        title: 'String Quintet No. 2 - Waltz in E Major',
+        date: '2025-07-09',
+        year: 2025,
+        duration: 2.933,
+        instrumentation: '5 Players: 2 Violins, Viola, 2 Cellos',
+        tags: ['chamber', 'string quartet', 'counterpoint'],
+        cover: 'https://images.unsplash.com/photo-1520975693416-35a2f3326d19?q=80&w=1200&auto=format&fit=crop',
+        audio: 'https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav',
+        score: '#',
+        video: '#',
+        notes: 'Motivic counterpoint, tight rhythmic cells, and a restless harmonic undertow.',
+        meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        order: 2,
+      },
+      {
+        id: 'string-quintet-1',
+        title: 'String Quintet No. 1 in F Major',
+        date: '2025-03-07',
+        year: 2025,
+        duration: 3.9,
+        instrumentation: '5 Players: Violin, Viola, 2 Cellos, Double Bass',
+        tags: ['solo', 'percussion', 'virtuosic'],
+        cover: 'https://images.unsplash.com/photo-1507833423370-a126b89d3946?q=80&w=1200&auto=format&fit=crop',
+        audio: 'https://www2.cs.uic.edu/~i101/SoundFiles/PinkPanther60.wav',
+        score: '#',
+        video: '#',
+        notes: 'Arpeggiated textures with fluid register shifts and shimmering resonances.',
+        meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        order: 3,
+      },
+      {
+        id: 'summer-dream',
+        title: 'The Summer Dream (Orchestral Pop)',
+        date: '2025-05-10',
+        year: 2025,
+        duration: 6.633,
+        instrumentation: 'Full Orchestra: Piccolo, Flute I and II and III, Oboe, Clarinet, Bass Clarinet, Alto Saxophone, Bassoon, Horn I and II and III, Piccolo Trumpet, Trumpet, Trombone, Tuba, Timpani, Glockenspiel, Bass Drum, Cymbals, Piano I and II and III, Violins, Violas I and II, Cellos I and II, Double Basses',
+        tags: ['orchestra', 'crossover', 'upbeat'],
+        cover: 'https://images.unsplash.com/photo-1496285416001-d6bc2b3c2f77?q=80&w=1200&auto=format&fit=crop',
+        audio: 'https://www2.cs.uic.edu/~i101/SoundFiles/Fanfare60.wav',
+        score: '#',
+        video: '#',
+        notes: 'Driving grooves, luminous strings, and brass hooks—concert opener energy.',
+        meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        order: 4,
+      },
+    ];
+
+    // --- Utilities -----------------------------------------------------------
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    function fmtMMSS(mins) {
+      const m = Math.floor(mins);
+      let s = Math.round((mins - m) * 60);
+      if (s === 60) { s = 0; return `${m + 1}:00`; }
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    }
+
+    // --- Render Works --------------------------------------------------------
+    function cardHTML(w) {
+      return `
+      <article class="card" role="listitem">
+        <div class="cover" data-open="${w.id}" style="cursor:pointer">
+          ${w.cover ? `<img src="${w.cover}" alt="Cover for ${w.title}" loading="lazy"/>` : ''}
+          <span class="badge">${fmtDate(w.date || `${w.year}-01-01`)}</span>
+        </div>
+        <div class="body">
+          <div class="title">${w.title}</div>
+          <div class="meta">${fmtMMSS(w.duration)} • ${w.instrumentation}</div>
+          <div class="buttons">
+            ${w.score && w.score !== '#' ? `<a class="btn" href="${w.score}" target="_blank" rel="noopener">Score (PDF)</a>` : ''}
+            ${w.video && w.video !== '#' ? `<a class="btn" href="${w.video}" target="_blank" rel="noopener">Video</a>` : ''}
+            <button class="btn" data-open="${w.id}">Details</button>
+          </div>
+        </div>
+      </article>`;
+    }
+
+    function renderGrid() {
+      const grid = $('#grid');
+      const items = WORKS.slice().sort((a, b) => {
+        const ao = (a.order ?? Number.POSITIVE_INFINITY);
+        const bo = (b.order ?? Number.POSITIVE_INFINITY);
+        if (ao !== bo) return ao - bo; // manual order first
+        const ad = new Date(a.date || `${a.year}-01-01`);
+        const bd = new Date(b.date || `${b.year}-01-01`);
+        return bd - ad || b.duration - a.duration;
+      });
+      grid.innerHTML = items.map(cardHTML).join('');
+      // No per-item listeners here; we use one delegated listener below.
+    }
+
+    // --- Modal ---------------------------------------------------------------
+    function openModal(id) {
+      const w = WORKS.find(x => x.id === id); if (!w) return;
+
+      // Title, meta, notes
+      $('#mTitle').textContent = w.title;
+      const when = fmtDate(w.date || `${w.year}-01-01`);
+      $('#mMeta').textContent = w.meta ? w.meta : `${when} • ${fmtMMSS(w.duration)}`;
+      $('#mNotes').textContent = w.notes || '';
+
+      // Visuals
+      $('#mCover').innerHTML = w.cover
+        ? `<img src="${w.cover}" alt="Cover for ${w.title}" style="width:100%;height:auto;border-radius:12px"/>`
+        : '';
+
+      // Links
+      $('#mScore').style.display = w.score && w.score !== '#' ? 'inline-flex' : 'none';
+      if (w.score && w.score !== '#') $('#mScore').href = w.score;
+      $('#mVideo').style.display = w.video && w.video !== '#' ? 'inline-flex' : 'none';
+      if (w.video && w.video !== '#') $('#mVideo').href = w.video;
+
+      // Instrumentation (lower line only)
+      $('#mInstr').textContent = w.instrumentation ? `Instrumentation: ${w.instrumentation}` : '';
+
+      // Audio: do NOT autoplay. Only set src if different so we don't interrupt ongoing playback.
+      const mAudio = $('#mAudio');
+      const newSrc = w.audio || '';
+      if (newSrc) {
+        if (mAudio.src !== newSrc) {
+          mAudio.src = newSrc; // load but don't play
+        }
+      } else {
+        mAudio.removeAttribute('src');
+        mAudio.load();
+      }
+
+      // Open modal (no autoplay)
+      const modal = $('#modal');
+      modal.showModal();
+      modal.addEventListener('click', e => { if (e.target === modal) closeModal(); }, { once: true });
+      window.addEventListener('keydown', escToClose, { once: true });
+    }
+
+    function escToClose(e) { if (e.key === 'Escape') closeModal(); }
+    function closeModal() {
+      const modal = $('#modal');
+      if (modal.open) modal.close();
+      // Do NOT pause/unload audio; it keeps playing unless user pauses.
+    }
+
+    // --- Routing (Works/About) ----------------------------------------------
+    function route() {
+      const hash = location.hash.replace('#', '');
+      const page = (hash === 'about') ? 'about' : 'works';
+      document.documentElement.setAttribute('data-page', page);
+      $$('nav a').forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + page); });
+    }
+    window.addEventListener('hashchange', route);
+
+    // --- Boot ----------------------------------------------------------------
+    document.getElementById('year').textContent = new Date().getFullYear();
+    renderGrid();
+    route();
+
+    // Single delegated click listener: works for covers + buttons via [data-open]
+    document.getElementById('grid').addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-open]');
+      if (!trigger) return;
+      const id = trigger.getAttribute('data-open');
+      openModal(id);
+    });
+  </script>
+</body>
+
+</html>
