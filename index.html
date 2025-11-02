@@ -467,7 +467,7 @@
         notes: 'Musical Notation Software: MuseScore 4<br>Audio Sound Library: MuseSounds',
         meta: 'July 2025 ~ September 12, 2025',
         detailLine: 'The first movement of Symphony No. 1 in A Major unfolds as a vivid emotional journey within classical sonata form. It begins with a lively, radiant first theme before giving way to a lyrical clarinet solo whose calm expressiveness anchors the movement’s heart. What follows is a dramatic transformation: joy turns to despair, the clarinet’s warmth replaced by the oboe’s deceptive imitation, plunging the music into darkness. A battle between light and shadow ensues, culminating in the flute’s victorious return and the orchestra’s euphoric resurgence. The recapitulation brings genuine peace — the clarinet’s melody returns, tender and real, leading to a triumphant conclusion of six brilliant A-major chords. Through contrast, illusion, and resolution, this movement captures the struggle and ultimate renewal of the human spirit.
-',
+        ',
         order: 1,
       },
       {
@@ -539,9 +539,15 @@
       return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     }
 
-   function setTextOrHide(el, text) {
+function setTextOrHide(el, text) {
   if (text && String(text).trim()) {
-    el.innerHTML = text; // ← allow <br>, <i>, etc.
+    // Convert double newlines to <p> paragraphs
+    const html = String(text)
+      .trim()
+      .split(/\n\s*\n/)         // split on blank lines
+      .map(p => `<p>${p}</p>`)  // wrap each chunk
+      .join('');
+    el.innerHTML = html;
     el.style.display = '';
   } else {
     el.innerHTML = '';
@@ -658,6 +664,7 @@
 </body>
 
 </html>
+
 
 
 
