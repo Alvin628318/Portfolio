@@ -397,9 +397,9 @@
 
         <!-- Buttons: Listen / Score / Video -->
         <div class="buttons" style="margin-top: 12px">
-          <a id="mListen" class="btn" target="_blank" rel="noopener">Listen</a>
-          <a id="mScore" class="btn" target="_blank" rel="noopener">Open Score (PDF)</a>
-          <a id="mVideo" class="btn" target="_blank" rel="noopener">Watch Video</a>
+          <a id="mListen" class="btn" target="_blank" rel="noopener">Audio</a>
+          <a id="mScore" class="btn" target="_blank" rel="noopener">Full Score</a>
+          <a id="mVideo" class="btn" target="_blank" rel="noopener">Video</a>
         </div>
       </div>
       <div>
@@ -526,8 +526,8 @@
           <div class="title">${w.title}</div>
           <div class="meta">${fmtMMSS(w.duration)} • ${w.instrumentation}</div>
           <div class="buttons">
-            ${w.audio && w.audio !== '#' ? `<a class="btn" href="${w.audio}" target="_blank" rel="noopener">Listen</a>` : ''}
-            ${w.score && w.score !== '#' ? `<a class="btn" href="${w.score}" target="_blank" rel="noopener">Score (PDF)</a>` : ''}
+            ${w.audio && w.audio !== '#' ? `<a class="btn" href="${w.audio}" target="_blank" rel="noopener">Audio</a>` : ''}
+            ${w.score && w.score !== '#' ? `<a class="btn" href="${w.score}" target="_blank" rel="noopener">Full Score</a>` : ''}
             ${w.video && w.video !== '#' ? `<a class="btn" href="${w.video}" target="_blank" rel="noopener">Video</a>` : ''}
             <button class="btn" data-open="${w.id}">Details</button>
           </div>
@@ -622,4 +622,5 @@
 </body>
 
 </html>
+
 
