@@ -330,6 +330,38 @@
       white-space: nowrap;
       border: 0;
     }
+    /* Limit overall modal height so it fits the viewport */
+dialog.modal {
+  max-height: 90vh;
+}
+
+/* Keep the grid from growing taller than the modal */
+.modal .content {
+  align-items: start;         /* avoid stretching rows */
+  max-height: calc(90vh - 60px); /* header ≈ 60px; adjust if needed */
+  overflow: hidden;           /* clip inner scrolling area */
+}
+
+/* Right column flex layout so the scroll area can grow */
+.modal .right {
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* important for flex children to shrink */
+}
+
+/* Only this area scrolls */
+.modal .text-scroll {
+  margin-top: 10px;
+  overflow: auto;
+  max-height: 56vh;          /* tweak as you like */
+  padding-right: 6px;        /* room for scrollbar */
+}
+
+/* Optional: nicer spacing for paragraphs inside */
+.modal .text-scroll p {
+  margin: 0 0 10px;
+}
+
 
     /* Hide the custom detail line if empty */
     #mInstr:empty { display: none; }
@@ -436,14 +468,18 @@
           <a id="mVideo" class="btn" target="_blank" rel="noopener">Video</a>
         </div>
       </div>
-      <div>
-        <h3 id="mTitle" style="margin: 0 0 6px"></h3>
-        <div id="mMeta" class="meta"></div>
-        <div id="mTags" class="tags" style="margin-top: 10px"></div>
-        <p id="mNotes" style="margin-top: 10px"></p>
-        <!-- This line is now a custom per-work line, not instrumentation -->
-        <p id="mInstr" class="meta" style="margin-top: 8px"></p>
-      </div>
+<div class="right">
+  <h3 id="mTitle" style="margin: 0 0 6px"></h3>
+  <div id="mMeta" class="meta"></div>
+  <div id="mTags" class="tags" style="margin-top: 10px"></div>
+
+  <!-- Only this scrolls -->
+  <div class="text-scroll">
+    <p id="mNotes" style="margin-top: 10px"></p>
+    <p id="mInstr" class="meta" style="margin-top: 8px"></p>
+  </div>
+</div>
+
     </div>
   </dialog>
 
@@ -717,6 +753,7 @@ function setTextOrHide(el, text) {
 </body>
 
 </html>
+
 
 
 
