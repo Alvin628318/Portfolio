@@ -44,8 +44,14 @@
       }
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
 
     body {
       margin: 0;
@@ -57,67 +63,276 @@
       line-height: 1.55;
     }
 
-    a { color: var(--brand); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
 
     header.site {
-      position: sticky; top: 0; z-index: 40;
+      position: sticky;
+      top: 0;
+      z-index: 40;
       backdrop-filter: blur(10px);
       background: color-mix(in oklab, var(--bg), transparent 25%);
       border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 90%);
     }
-    .inner { max-width: var(--max-w); margin: 0 auto; padding: 16px clamp(14px, 3vw, 28px); }
 
-    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .2px; }
-    .brand .logo { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--brand), var(--accent)); box-shadow: var(--shadow); }
-    .brand .name { font-size: 18px; }
-    nav a { color: var(--text); opacity: .85; margin-left: 18px; font-weight: 500; }
+    .inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 16px clamp(14px, 3vw, 28px);
+    }
 
-    .nav-row { display: flex; align-items: center; justify-content: space-between; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
 
-    .hero { padding: 24px 0 8px; }
-    .hero h1 { font-size: clamp(28px, 3.6vw, 42px); line-height: 1.1; margin: 4px 0 6px; }
-    .hero p { margin: 0; color: var(--muted); font-size: clamp(14px, 1.6vw, 16px); }
+    .brand .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      box-shadow: var(--shadow);
+    }
+
+    .brand .name {
+      font-size: 18px;
+    }
+
+    nav a {
+      color: var(--text);
+      opacity: .85;
+      margin-left: 18px;
+      font-weight: 500;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero {
+      padding: 24px 0 8px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 3.6vw, 42px);
+      line-height: 1.1;
+      margin: 4px 0 6px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.6vw, 16px);
+    }
 
     /* Page routing (works/about) */
-    [data-page="about"] #works { display: none; }
-    [data-page="works"] #about, [data-page="works"] #contact { display: none; }
+    [data-page="about"] #works {
+      display: none;
+    }
+
+    [data-page="works"] #about,
+    [data-page="works"] #contact {
+      display: none;
+    }
 
     /* Grid */
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--grid-gap); margin-top: 18px; }
-    .card { grid-column: span 4; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; border: 1px solid color-mix(in oklab, var(--text), transparent 90%); display: flex; flex-direction: column; }
-    @media (max-width: 1000px) { .card { grid-column: span 6; } }
-    @media (max-width: 640px) { .card { grid-column: span 12; } }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--grid-gap);
+      margin-top: 18px;
+    }
 
-    .cover { position: relative; aspect-ratio: 16/10; background: #0a0d12; display: grid; place-items: center; }
-    .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .badge { position: absolute; left: 12px; top: 12px; padding: 4px 8px; border-radius: 999px; background: color-mix(in oklab, var(--brand), transparent 70%); color: white; font-weight: 700; font-size: 12px; }
+    .card {
+      grid-column: span 4;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid color-mix(in oklab, var(--text), transparent 90%);
+      display: flex;
+      flex-direction: column;
+    }
 
-    .card .body { padding: 14px; display: grid; gap: 10px; }
-    .title { font-weight: 700; font-size: 16px; }
-    .meta { color: var(--muted); font-size: 13px; }
+    @media (max-width: 1000px) {
+      .card {
+        grid-column: span 6;
+      }
+    }
 
-    .tags { display: none; }
-    .tag { font-size: 11px; padding: 4px 8px; border-radius: 999px; background: var(--chip); color: color-mix(in oklab, var(--text), transparent 20%); }
+    @media (max-width: 640px) {
+      .card {
+        grid-column: span 12;
+      }
+    }
 
-    .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
-    .btn { border: 1px solid color-mix(in oklab, var(--text), transparent 85%); background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 4%), var(--surface)); padding: 8px 10px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
-    .btn:hover { box-shadow: var(--ring); }
+    .cover {
+      position: relative;
+      aspect-ratio: 16/10;
+      background: #0a0d12;
+      display: grid;
+      place-items: center;
+    }
+
+    .cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--brand), transparent 70%);
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .card .body {
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .tags {
+      display: none;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: color-mix(in oklab, var(--text), transparent 20%);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 1px solid color-mix(in oklab, var(--text), transparent 85%);
+      background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 4%), var(--surface));
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .btn:hover {
+      box-shadow: var(--ring);
+    }
 
     /* Modal */
-    dialog.modal { border: none; padding: 0; border-radius: 16px; width: min(920px, 96vw); background: var(--surface); color: var(--text); box-shadow: var(--shadow-2); }
-    .modal header { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 88%); }
-    .modal .content { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 18px; }
-    @media (max-width: 860px) { .modal .content { grid-template-columns: 1fr; } }
-    .close-x { all: unset; cursor: pointer; font-weight: 800; font-size: 20px; padding: 4px 8px; border-radius: 8px; }
-    .close-x:hover { box-shadow: var(--ring); }
+    dialog.modal {
+      border: none;
+      padding: 0;
+      border-radius: 16px;
+      width: min(920px, 96vw);
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-2);
+    }
 
-    .about, .contact { margin-top: 44px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid color-mix(in oklab, var(--text), transparent 90%); }
-    .about .inner, .contact .inner { padding-top: 22px; padding-bottom: 22px; }
+    .modal header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 88%);
+    }
 
-    footer { color: var(--muted); font-size: 12px; padding: 18px 0 28px; text-align: center; }
+    .modal .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 18px;
+    }
 
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 1px, 1px); white-space: nowrap; border: 0; }
+    @media (max-width: 860px) {
+      .modal .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .close-x {
+      all: unset;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 20px;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+
+    .close-x:hover {
+      box-shadow: var(--ring);
+    }
+
+    .about,
+    .contact {
+      margin-top: 44px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid color-mix(in oklab, var(--text), transparent 90%);
+    }
+
+    .about .inner,
+    .contact .inner {
+      padding-top: 22px;
+      padding-bottom: 22px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 18px 0 28px;
+      text-align: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 1px, 1px);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Hide the custom detail line if empty */
+    #mInstr:empty { display: none; }
   </style>
 </head>
 
@@ -192,6 +407,7 @@
         <div id="mMeta" class="meta"></div>
         <div id="mTags" class="tags" style="margin-top: 10px"></div>
         <p id="mNotes" style="margin-top: 10px"></p>
+        <!-- This line is now a custom per-work line, not instrumentation -->
         <p id="mInstr" class="meta" style="margin-top: 8px"></p>
       </div>
     </div>
@@ -199,57 +415,75 @@
 
   <script>
     // --- Data ----------------------------------------------------------------
+    // You can add an optional `detailLine` to any work to show a custom line in the Details modal.
+    // If `detailLine` is missing/empty, the line is hidden.
     const WORKS = [
       {
         id: 'symphony-1',
         title: 'Symphony No. 1 in A Major - I. Vivace (First movement)',
-        date: '2025-09-12', year: 2025, duration: 9.867,
+        date: '2025-09-12', // exact date
+        year: 2025,
+        duration: 9.867, // minutes
         instrumentation: 'Full orchestra: Flute I and II, Oboe, Clarinet, Bass Clarinet, Bassoon, Horn I and II, Trumpet, Trombone, Timpani I and II, Cymbals, Triangle, Violins I and II, Violas, Cellos, Double Basses',
+        tags: ['orchestra', 'symphonic', 'dramatic'],
         cover: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1200&auto=format&fit=crop',
         audio: './assets/audio/symphony-1.mp3',
         score: './assets/scores/symphony-1.pdf',
         video: 'https://youtube.com/',
         notes: 'Opening movement in sonata form; kinetic rhythms, brass fanfares, and lyrical second theme.',
         meta: 'July 2025 ~ September 12, 2025',
+        detailLine: 'Premiere: Sep 12, 2025 • Taipei',
         order: 1,
       },
       {
         id: 'string-quintet-2',
         title: 'String Quintet No. 2 - Waltz in E Major',
-        date: '2025-07-09', year: 2025, duration: 2.933,
+        date: '2025-07-09',
+        year: 2025,
+        duration: 2.933,
         instrumentation: '5 Players: 2 Violins, Viola, 2 Cellos',
+        tags: ['chamber', 'string quartet', 'counterpoint'],
         cover: 'https://images.unsplash.com/photo-1520975693416-35a2f3326d19?q=80&w=1200&auto=format&fit=crop',
-        audio: './assets/audio/string-quintet-2.mp3',
-        score: './assets/scores/string-quintet-2.pdf',
+        audio: './assets/audio/string-quartet-2.mp3',
+        score: './assets/audio/string-quartet-2.pdf',
         video: '#',
         notes: 'Motivic counterpoint, tight rhythmic cells, and a restless harmonic undertow.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        detailLine: 'Recording: Studio B • 2025',
         order: 2,
       },
       {
         id: 'string-quintet-1',
         title: 'String Quintet No. 1 in F Major',
-        date: '2025-03-07', year: 2025, duration: 3.9,
+        date: '2025-03-07',
+        year: 2025,
+        duration: 3.9,
         instrumentation: '5 Players: Violin, Viola, 2 Cellos, Double Bass',
+        tags: ['solo', 'percussion', 'virtuosic'],
         cover: 'https://images.unsplash.com/photo-1507833423370-a126b89d3946?q=80&w=1200&auto=format&fit=crop',
-        audio: './assets/audio/string-quintet-1.mp3',
-        score: './assets/scores/string-quintet-2.pdf',
+        audio: './assets/audio/string-quartet-1.mp3',
+        score: './assets/audio/string-quartet-2.pdf',
         video: '#',
         notes: 'Arpeggiated textures with fluid register shifts and shimmering resonances.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        detailLine: '',
         order: 3,
       },
       {
         id: 'summer-dream',
         title: 'The Summer Dream (Orchestral Pop)',
-        date: '2025-05-10', year: 2025, duration: 6.633,
+        date: '2025-05-10',
+        year: 2025,
+        duration: 6.633,
         instrumentation: 'Full Orchestra: Piccolo, Flute I and II and III, Oboe, Clarinet, Bass Clarinet, Alto Saxophone, Bassoon, Horn I and II and III, Piccolo Trumpet, Trumpet, Trombone, Tuba, Timpani, Glockenspiel, Bass Drum, Cymbals, Piano I and II and III, Violins, Violas I and II, Cellos I and II, Double Basses',
+        tags: ['orchestra', 'crossover', 'upbeat'],
         cover: 'https://images.unsplash.com/photo-1496285416001-d6bc2b3c2f77?q=80&w=1200&auto=format&fit=crop',
         audio: './assets/audio/summer-dream.mp3',
-        score: './assets/scores/summer-dream.pdf',
+        score: './assets/audio/summer-dream.pdf',
         video: '#',
         notes: 'Driving grooves, luminous strings, and brass hooks—concert opener energy.',
         meta: 'Premiere: May 10, 2025 • Conductor: Jane Doe',
+        detailLine: 'Edit: June 2025',
         order: 4,
       },
     ];
@@ -270,6 +504,16 @@
       return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     }
 
+    function setTextOrHide(el, text) {
+      if (text && String(text).trim()) {
+        el.textContent = text;
+        el.style.display = '';
+      } else {
+        el.textContent = '';
+        el.style.display = 'none';
+      }
+    }
+
     // --- Render Works --------------------------------------------------------
     function cardHTML(w) {
       return `
@@ -282,6 +526,7 @@
           <div class="title">${w.title}</div>
           <div class="meta">${fmtMMSS(w.duration)} • ${w.instrumentation}</div>
           <div class="buttons">
+            ${w.audio && w.audio !== '#' ? `<a class="btn" href="${w.audio}" target="_blank" rel="noopener">Listen</a>` : ''}
             ${w.score && w.score !== '#' ? `<a class="btn" href="${w.score}" target="_blank" rel="noopener">Score (PDF)</a>` : ''}
             ${w.video && w.video !== '#' ? `<a class="btn" href="${w.video}" target="_blank" rel="noopener">Video</a>` : ''}
             <button class="btn" data-open="${w.id}">Details</button>
@@ -319,7 +564,7 @@
         ? `<img src="${w.cover}" alt="Cover for ${w.title}" style="width:100%;height:auto;border-radius:12px"/>`
         : '';
 
-      // Links
+      // Buttons
       // Listen
       if (w.audio && w.audio !== '#') {
         $('#mListen').style.display = 'inline-flex';
@@ -336,8 +581,8 @@
       $('#mVideo').style.display = w.video && w.video !== '#' ? 'inline-flex' : 'none';
       if (w.video && w.video !== '#') $('#mVideo').href = w.video;
 
-      // Optional: instrumentation/footer line
-      $('#mInstr').textContent = w.instrumentation ? `Instrumentation: ${w.instrumentation}` : '';
+      // Custom per-work line (disconnected from instrumentation)
+      setTextOrHide($('#mInstr'), w.detailLine);
 
       // Open modal
       const modal = $('#modal');
@@ -366,7 +611,7 @@
     renderGrid();
     route();
 
-    // Delegated click: cover and Details button open modal via [data-open]
+    // Single delegated click listener: works for covers + buttons via [data-open]
     document.getElementById('grid').addEventListener('click', (e) => {
       const trigger = e.target.closest('[data-open]');
       if (!trigger) return;
@@ -377,4 +622,3 @@
 </body>
 
 </html>
-
