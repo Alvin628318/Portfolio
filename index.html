@@ -504,15 +504,16 @@
       return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     }
 
-    function setTextOrHide(el, text) {
-      if (text && String(text).trim()) {
-        el.textContent = text;
-        el.style.display = '';
-      } else {
-        el.textContent = '';
-        el.style.display = 'none';
-      }
-    }
+   function setTextOrHide(el, text) {
+  if (text && String(text).trim()) {
+    el.innerHTML = text; // ← allow <br>, <i>, etc.
+    el.style.display = '';
+  } else {
+    el.innerHTML = '';
+    el.style.display = 'none';
+  }
+}
+
 
     // --- Render Works --------------------------------------------------------
     function cardHTML(w) {
@@ -622,6 +623,7 @@
 </body>
 
 </html>
+
 
 
 
