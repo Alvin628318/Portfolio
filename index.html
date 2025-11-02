@@ -557,7 +557,7 @@
       $('#mTitle').textContent = w.title;
       const when = fmtDate(w.date || `${w.year}-01-01`);
       $('#mMeta').textContent = w.meta ? w.meta : `${when} • ${fmtMMSS(w.duration)}`;
-      $('#mNotes').textContent = w.notes || '';
+      $('#mNotes').innerHTML = w.notes || '';
 
       // Visuals
       $('#mCover').innerHTML = w.cover
@@ -622,6 +622,7 @@
 </body>
 
 </html>
+
 
 
 
